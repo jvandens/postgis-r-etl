@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
     environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin@localhost
+      PGADMIN_DEFAULT_EMAIL: pgadmin@foobar.com
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: 'True'
       TZ: UTC
