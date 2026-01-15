@@ -53,6 +53,7 @@ services:
     volumes:
       - /mnt/user/appdata/postgis-r-etl/rstudio/scripts:/home/rstudio/scripts
       - /mnt/user/appdata/postgis-r-etl/rstudio/cron:/etc/cron.d
+      - /mnt/user/appdata/postgis-r-etl/rstudio/r_libs:/usr/local/lib/R/site-library
     ports:
       - "8788:8787"
     networks:
