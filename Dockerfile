@@ -14,6 +14,8 @@ RUN apt-get update && \
         libgeos-dev \
         libproj-dev \
         gdal-bin \
+        make \
+        build-essential \
         && apt-get clean && \
         rm -rf /var/lib/apt/lists/*
 
