@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       TZ: UTC
     volumes:
-      - /mnt/user/appdata/postgis-r-etl/pgdata:/var/lib/postgresql/data
+      - ${STACK_ROOT}/pgdata:/var/lib/postgresql/data
     ports:
       - "55432:5432"
     networks:
@@ -29,7 +29,7 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'True'
       TZ: UTC
     volumes:
-      - /mnt/user/appdata/postgis-r-etl/pgadmin:/var/lib/pgadmin
+      - ${STACK_ROOT}/pgadmin:/var/lib/pgadmin
     ports:
       - "5051:80"
     networks:
@@ -51,9 +51,9 @@ services:
       PGPASSWORD: ${POSTGRES_PASSWORD}
       TZ: UTC
     volumes:
-      - /mnt/user/appdata/postgis-r-etl/rstudio/scripts:/home/rstudio/scripts
-      - /mnt/user/appdata/postgis-r-etl/rstudio/cron:/etc/cron.d
-      - /mnt/user/appdata/postgis-r-etl/rstudio/r_libs:/usr/local/lib/R/site-library
+      - ${STACK_ROOT}/rstudio/scripts:/home/rstudio/scripts
+      - ${STACK_ROOT}/rstudio/cron:/etc/cron.d
+      - ${STACK_ROOT}/rstudio/r_libs:/usr/local/lib/R/site-library
     ports:
       - "8788:8787"
     networks:
