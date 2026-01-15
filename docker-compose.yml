@@ -37,7 +37,7 @@ services:
 
   etl:
     build:
-      context:
+      context: .
       dockerfile: Dockerfile
     container_name: postgis-r-etl_rstudio
     restart: unless-stopped
