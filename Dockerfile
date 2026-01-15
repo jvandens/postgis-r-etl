@@ -20,11 +20,8 @@ RUN apt-get update && \
 # Set R library path (optional, makes install-packages default here)
 ENV R_LIBS_USER=/usr/local/lib/R/site-library
 
-# Install default R packages
-RUN install2.r --error \
-        tidyverse \
-        RPostgres \
-        sf
+# Install default R packages (tidyverse, RPostgres, sf)
+RUN R -e "install.packages(c('tidyverse','RPostgres','sf'), repos='https://cloud.r-project.org/', dependencies=TRUE)"
 
 # Ensure cron dir exists (in case you mount an empty dir)
 RUN mkdir -p /etc/cron.d
