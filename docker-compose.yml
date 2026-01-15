@@ -35,8 +35,10 @@ services:
     networks:
       - backend
 
-  etl:
-    image: rocker/rstudio:4.3
+etl:
+    build:
+      context:
+      dockerfile: Dockerfile
     container_name: postgis-r-etl_rstudio
     restart: unless-stopped
     depends_on:
