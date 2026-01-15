@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: postgis_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: analytics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: UTC
+    volumes:
+      - /mnt/user/appdata/postgis-r-etl/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  etl:
+    image: rocker/rstudio:4.3
+    container_name: r_etl
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PASSWORD: ${RSTUDIO_PASSWORD}
+      PGHOST: db
+      PGDATABASE: analytics
+      PGUSER: postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      TZ: UTC
+    volumes:
+      - /mnt/user/appdata/postgis-r-etl/rstudio/scripts:/home/rstudio/scripts
+      - /mnt/user/appdata/postgis-r-etl/rstudio/cron:/etc/cron.d
+    ports:
+      - "8787:8787"
+    networks:
+      - backend
+    command: >
+      bash -c "
+      chmod 0644 /etc/cron.d/* &&
+      crontab /etc/cron.d/* &&
+      cron &&
+      /init
+      "
+
+networks:
+  backend:
+    driver: bridge
