@@ -3,7 +3,7 @@ version: "3.9"
 services:
   db:
     image: postgis/postgis:16-3.4
-    container_name: postgis_db
+    container_name: postgis-r-etl_postgis
     restart: unless-stopped
     environment:
       POSTGRES_DB: analytics
@@ -13,13 +13,31 @@ services:
     volumes:
       - /mnt/user/appdata/postgis-r-etl/pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "55432:5432"
+    networks:
+      - backend
+      
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: postgis-r-etl_pgadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@localhost
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: 'True'
+      TZ: UTC
+    volumes:
+      - /mnt/user/appdata/postgis-r-etl/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5051:80"
     networks:
       - backend
 
   etl:
     image: rocker/rstudio:4.3
-    container_name: r_etl
+    container_name: postgis-r-etl_rstudio
     restart: unless-stopped
     depends_on:
       - db
@@ -34,17 +52,19 @@ services:
       - /mnt/user/appdata/postgis-r-etl/rstudio/scripts:/home/rstudio/scripts
       - /mnt/user/appdata/postgis-r-etl/rstudio/cron:/etc/cron.d
     ports:
-      - "8787:8787"
+      - "8788:8787"
     networks:
       - backend
     command: >
       bash -c "
-      chmod 0644 /etc/cron.d/* &&
-      crontab /etc/cron.d/* &&
+      if [ -n \"$(ls -A /etc/cron.d 2>/dev/null)\" ]; then
+        chmod 0644 /etc/cron.d/* &&
+        crontab /etc/cron.d/*
+      fi &&
       cron &&
       /init
       "
-
+      
 networks:
   backend:
     driver: bridge
