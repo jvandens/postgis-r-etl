@@ -64,7 +64,7 @@ services:
       crontab /home/rstudio/cron/crontab &&
       cron &&
       exec /init
-    "
+      "
       
 networks:
   backend:
