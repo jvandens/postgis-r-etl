@@ -60,12 +60,12 @@ services:
       - backend
     command: >
       bash -c "
-      if [ -n \"$(ls -A /etc/cron.d 2>/dev/null)\" ]; then
-        chmod 0644 /etc/cron.d/* &&
-        crontab /etc/cron.d/*
-      fi &&
-      cron &&
-      /init
+        if [ -n \"$(ls -A /etc/cron.d 2>/dev/null)\" ]; then
+          chown root:root /etc/cron.d/* &&
+          chmod 0644 /etc/cron.d/*
+        fi &&
+        cron &&
+        exec /init
       "
       
 networks:
