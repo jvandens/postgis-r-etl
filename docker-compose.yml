@@ -52,7 +52,7 @@ services:
       TZ: UTC
     volumes:
       - ${STACK_ROOT}/rstudio/scripts:/home/rstudio/scripts
-      - ${STACK_ROOT}/rstudio/cron:/etc/cron.d
+      - ${STACK_ROOT}/rstudio/cron:/home/rstudio/cron
       - ${STACK_ROOT}/rstudio/logs:/home/rstudio/logs
       - ${STACK_ROOT}/rstudio/r_libs:/usr/local/lib/R/site-library
     ports:
@@ -61,13 +61,10 @@ services:
       - backend
     command: >
       bash -c "
-        if [ -n \"$(ls -A /etc/cron.d 2>/dev/null)\" ]; then
-          chown root:root /etc/cron.d/* &&
-          chmod 0644 /etc/cron.d/*
-        fi &&
-        cron &&
-        exec /init
-      "
+      crontab /home/rstudio/cron/crontab &&
+      cron &&
+      exec /init
+    "
       
 networks:
   backend:
