@@ -53,6 +53,7 @@ services:
     volumes:
       - ${STACK_ROOT}/rstudio/scripts:/home/rstudio/scripts
       - ${STACK_ROOT}/rstudio/cron:/etc/cron.d
+      - ${STACK_ROOT}/rstudio/logs:/home/rstudio/logs
       - ${STACK_ROOT}/rstudio/r_libs:/usr/local/lib/R/site-library
     ports:
       - "8788:8787"
