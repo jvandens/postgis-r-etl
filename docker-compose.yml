@@ -70,7 +70,7 @@ services:
       
   code:
     build:
-      context .
+      context: .
       dockerfile: Dockerfile.code
     container_name: postgis_r_etl_code
     restart: unless-stopped
