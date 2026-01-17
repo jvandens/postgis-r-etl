@@ -38,7 +38,7 @@ services:
   etl:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.rstudio
     container_name: postgis-r-etl_rstudio
     restart: unless-stopped
     depends_on:
@@ -69,8 +69,10 @@ services:
       "
       
   code:
-    image: codercom/code-server:latest
-    container_name: ostgis_r_etl_code
+    build:
+      context .
+      dockerfile: Dockerfile.code
+    container_name: postgis_r_etl_code
     restart: unless-stopped
     environment:
       PASSWORD: ${CODE_SERVER_PASSWORD}
