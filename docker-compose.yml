@@ -76,6 +76,10 @@ services:
     restart: unless-stopped
     environment:
       PASSWORD: ${CODE_SERVER_PASSWORD}
+      PGHOST: db
+      PGDATABASE: analytics
+      PGUSER: postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD}
       TZ: UTC
     volumes:
       - ${STACK_ROOT}/code-server/config:/home/coder/.config
