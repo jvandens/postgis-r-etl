@@ -80,7 +80,7 @@ services:
       - ${STACK_ROOT}/code-server/workspace:/home/coder/workspace
       - ${STACK_ROOT}/rstudio/scripts:/home/coder/workspace/scripts
     ports:
-      - "8443:8080"
+      - "8449:8080"
     networks:
       - backend
 
