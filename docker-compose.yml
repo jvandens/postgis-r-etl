@@ -70,7 +70,7 @@ services:
       
   code:
     image: codercom/code-server:latest
-    container_name: code_postgis_r_etl
+    container_name: ostgis_r_etl_code
     restart: unless-stopped
     environment:
       PASSWORD: ${CODE_SERVER_PASSWORD}
