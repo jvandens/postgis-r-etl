@@ -61,11 +61,29 @@ services:
       - backend
     command: >
       bash -c "
-      crontab /home/rstudio/cron/crontab &&
+      if [ -f /home/rstudio/cron/crontab ]; then
+        crontab /home/rstudio/cron/crontab;
+      fi &&
       cron &&
       exec /init
       "
       
+  code:
+    image: codercom/code-server:latest
+    container_name: code_postgis_r_etl
+    restart: unless-stopped
+    environment:
+      PASSWORD: ${CODE_SERVER_PASSWORD}
+      TZ: UTC
+    volumes:
+      - ${STACK_ROOT}/code-server/config:/home/coder/.config
+      - ${STACK_ROOT}/code-server/workspace:/home/coder/workspace
+      - ${STACK_ROOT}/rstudio/scripts:/home/coder/workspace/scripts
+    ports:
+      - "8443:8080"
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
