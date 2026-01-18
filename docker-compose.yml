@@ -90,6 +90,24 @@ services:
     networks:
       - backend
 
+  metabase:
+    image: metabase/metabase:latest
+    container_name: postgis-r-etl_metabase
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      MB_DB_FILE: /metabase-data/metabase.db
+      MB_SITE_NAME: "Project Analytics"
+      MB_ANON_TRACKING_ENABLED: "false"
+      TZ: UTC
+    volumes:
+      - ${STACK_ROOT}/metabase/data:/metabase-data
+    ports:
+      - "3001:3000"
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
